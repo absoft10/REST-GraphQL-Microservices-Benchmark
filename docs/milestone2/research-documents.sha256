@@ -1,0 +1,6 @@
+# SHA-256 of original research documents (research-documents/), Phase 0, 2026-10-31T22:10:11Z
+# Verify: cd research-documents && grep -v "^#" ../docs/milestone2/research-documents.sha256 | sha256sum -c -
+3e38f506e6746792967e9054050cc8f1b192a8ed14cc1a8c42ac644d6d2d57f8 *4c6abeff-89f9-4662-996d-124d153da4c7 (4).pdf
+667398b0e0eebfb5299a124244c71892ed6107d5c79e0a4c93f795c37453f2f6 *Milestone1_Review_Analysis_and_Revision_Plan_v1.pdf
+f3e0373bba270f014669561a59c6e3710d1d88ff1f9bd4ac4f4495a2a0ca00a0 *Milestone2_Experiment_Specification_and_Input_Checklist_v1.pdf
+ea2e607533366fa132015eaf0483a971d6c6e976d1fa656aba163932e359de76 *Review Decision.txt

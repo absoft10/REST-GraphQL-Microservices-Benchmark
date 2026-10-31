@@ -1,0 +1,9 @@
+# Repository-local line-ending normalisation (DECISION-008); does not affect existing-source/ (ignored, separate repo)
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.pdf binary
+*.png binary
+*.jtl binary
+*.gz binary

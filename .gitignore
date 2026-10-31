@@ -1,0 +1,41 @@
+# --- Preserved originals: never tracked here (DECISION-001, DECISION-008) ---
+# Original repository; keeps its own .git, untouched. Fingerprint: docs/milestone2/baseline_manifest.txt
+/existing-source/
+# Original research documents (confidential review correspondence). Fingerprint: docs/milestone2/research-documents.sha256
+/research-documents/
+
+# --- Experimental data (archived in write-once storage with SHA256SUMS; not in git) ---
+/experiment/raw/
+/experiment/pilot/
+/benchmark/data/source/
+
+# --- Local / machine-specific ---
+**/settings.local.json
+*.local.md
+
+# --- Secrets ---
+.env
+.env.*
+*.pfx
+*.pem
+*.key
+appsettings.*.local.json
+secrets.json
+
+# --- .NET build output ---
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.idea/
