@@ -9,21 +9,21 @@
 
 ## 1. Resource representations
 
-### 1.1 Book ⟨P⟩: every column of the verified source dataset
+### 1.1 Book: every column of the verified source dataset (final, DECISION-009)
 
-Provisional field list (the manuscript-described attributes plus likely dataset columns). It is finalised after O-7:
+Final field list. It maps one-to-one onto `BooksDatasetClean.csv` (Kaggle `elvinrustam/books-dataset` v3), after cleaning rules R1–R9 (docs/milestone2/09 §6):
 
-| Field | JSON type | Nullable | ⟨P⟩ |
+| Field | JSON type | Nullable | Source column |
 |---|---|---|---|
-| `bookId` | integer | no | assigned in file order |
-| `title` | string | no | ⟨P⟩ |
-| `authors` | string | no | ⟨P⟩ |
-| `description` | string | yes | ⟨P⟩, if present in the source |
-| `category` | string | yes | ⟨P⟩ |
-| `publisher` | string | yes | ⟨P⟩, if present |
-| `price` | number (2 decimals as stored) | yes | ⟨P⟩ |
-| `publishMonth` | string | yes | ⟨P⟩, if present |
-| `publishYear` | integer | yes | ⟨P⟩ |
+| `bookId` | integer | no | 1-based data-row order (DS-3) |
+| `title` | string | no | `Title` |
+| `authors` | string | no | `Authors` (verbatim, incl. `By` prefix, DS-5) |
+| `description` | string | yes | `Description` |
+| `category` | string | yes | `Category` (trimmed, DS-6) |
+| `publisher` | string | yes | `Publisher` |
+| `price` | number (2 decimals as stored) | yes | `Price Starting With ($)` (exact, USD starting price) |
+| `publishMonth` | string | yes | `Publish Date (Month)` |
+| `publishYear` | integer | yes | `Publish Date (Year)` |
 
 ### 1.2 Member (approved: baseline `User` fields)
 

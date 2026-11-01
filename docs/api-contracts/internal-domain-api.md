@@ -18,7 +18,7 @@
 | Loans | `GET /internal/loans?memberIds={sorted,unique}` | Loan[] by (`memberId`, `loanId`) | `… FROM loans.loan WHERE member_id IN (<ids>) ORDER BY member_id, loan_id` (index `ix_loan_member`) |
 | all | `GET /health` | 200 | none |
 
-The representations are identical to the REST public representations (rest-api.md §1). Book is ⟨P⟩.
+The representations are identical to the REST public representations (rest-api.md §1). Book is final (DECISION-009).
 
 **`IN`-list translation:**
 - The EF Core `Contains` translation mode and the database compatibility level are pinned, and the generated SQL is captured once per query and committed (doc 01 §5).

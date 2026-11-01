@@ -1,5 +1,5 @@
 # N-G query document (M2 A-2). Selects exactly the nested A-6 required fields (DECISION-003, O-2).
-# Book field names ⟨P⟩ until dataset verification (O-7). Variables: {"offset": 0, "limit": M}
+# Book field names final (DECISION-009). Variables: {"offset": 0, "limit": M}
 query NestedMembers($offset: Int!, $limit: Int!) {
   members(offset: $offset, limit: $limit) {
     memberId

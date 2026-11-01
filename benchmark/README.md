@@ -2,7 +2,10 @@
 
 This is the new system under test (DECISION-002, AP-1). It runs **locally on Windows with SQL Server LocalDB**, with no Docker and no AWS. The contracts are in `../docs/api-contracts/`. The design is in `../docs/milestone2/`.
 
-> **Book data is a TEMPORARY fixture.** It is not the research dataset, and it is labelled `TEMPORARY_FIXTURE_NOT_RESEARCH_DATA` in every database. The Kaggle dataset still has to be downloaded and verified (DECISION-004, O-7). No number produced locally is a research result.
+> **Datasets.**
+> - The **research dataset** is Kaggle `elvinrustam/books-dataset` v3 (DECISION-009). It is imported with rules R1–R9 from a SHA-256-pinned archive that is not in git (§2b), and is the default for `scripts/db-init.ps1`.
+> - The **TEMPORARY fixture** is labelled `TEMPORARY_FIXTURE_NOT_RESEARCH_DATA`. It is used only by the automated tests (`lms_it_*` databases) or explicitly with `-BooksSource fixture`.
+> - **No number produced locally is an experimental result.** Local runs are functional and equivalence validation only.
 
 ## 0. Prerequisites (checked on this workstation, 2026-11-01)
 
@@ -26,13 +29,26 @@ This restores the pinned packages (`Directory.Packages.props`) and builds with w
 ## 2. Create and seed the local databases
 
 ```powershell
-.\scripts\db-init.ps1
+.\scripts\db-init.ps1                        # research dataset (requires §2b)
+.\scripts\db-init.ps1 -BooksSource fixture   # TEMPORARY fixture instead
 ```
+
+### 2b. Obtain the research dataset (one time; not stored in git)
+
+Kaggle serves the public dataset without authentication. Download version 3 into the git-ignored source folder:
+
+```powershell
+New-Item -ItemType Directory -Force data\source\kaggle-books-dataset-v3 | Out-Null
+curl.exe -L --fail -o data\source\kaggle-books-dataset-v3\archive.zip "https://www.kaggle.com/api/v1/datasets/download/elvinrustam/books-dataset?datasetVersionNumber=3"
+(Get-FileHash data\source\kaggle-books-dataset-v3\archive.zip -Algorithm SHA256).Hash   # must be E42F3DC8A64ED4A549BCF956B4F712452978EDE7AA8CE49D3CDD27A3BF831839
+```
+
+The importer verifies the archive hash and the `BooksDatasetClean.csv` entry hash (`e59f031f…da53`), and rejects any other file. The import result is deterministic: `catalog.book` must have the canonical SHA-256 `dd40286a317d42092e9730fdc9da5312291481f6fb749b1dabf1427fa9625201`, which `tests/golden/kaggle-v3.golden.json` pins. The unit-test suite includes golden tests that run automatically when the archive is present, and are skipped when it is absent.
 
 It runs these steps:
 1. `lms-bench db reset`: drops and recreates `lms_catalog`, `lms_members` and `lms_loans` from `data/ddl/*.sql`.
-2. `lms-bench db seed`: generates the dataset deterministically. The default seed is `20261101`, with 2,000 fixture books, 10,000 members, M = 10 and L = 5. It writes `data/generated/local-fixture/{books,members,loans}.csv` and `manifest.json`, then bulk loads the data.
-3. `lms-bench db verify`: data-freeze verification. It checks content hashes against the generator, row counts, cross-database orphan references, the O-8 target-set invariants, the compatibility level and a schema fingerprint. It writes `data_freeze_local-fixture.json`. **Every line must show PASS.**
+2. `lms-bench db seed --books-source kaggle`: imports the 103,063 research books (rules R1–R9) and generates members and loans deterministically (seed `20261101`, 10,000 members, M = 10, L = 5). It writes `data/generated/kaggle-v3/{books,members,loans}.csv` and `manifest.json` (with source hashes and rule statistics), then bulk loads the data. With `-BooksSource fixture`, the books are 2,000 TEMPORARY fixture books (label `local-fixture`).
+3. `lms-bench db verify`: data-freeze verification. It checks content hashes against the generator, row counts, cross-database orphan references, the O-8 target-set invariants, the compatibility level and a schema fingerprint. It also checks the pinned source hashes for the research dataset. It writes `data_freeze_<label>.json`. **Every line must show PASS** (24 checks for kaggle-v3).
 
 Parameters: `-Seed`, `-Books`, `-Members`, `-TargetMembers`, `-LoansPerTarget`, `-Prefix`, `-Label`. The DDL also runs with plain sqlcmd:
 
@@ -77,7 +93,7 @@ Use `http/scenarios.http`, which contains every scenario plus error examples, or
 .\scripts\verify-equivalence.ps1
 ```
 
-This runs all five configurations and normalises each response to the canonical required-information representation. It compares the result with the **oracle built directly from the databases**, and it computes Required Bytes, Actual Bytes and the exact decomposition. Outputs go to `artifacts/equivalence/local-fixture/`: `bytes_summary.csv`, `flat_keys.txt` and `nested_keys.txt` (C-6), `report.json`, and `samples/`. The run must end with `EQUIVALENCE: PASS`.
+This runs all five configurations and normalises each response to the canonical required-information representation. It compares the result with the **oracle built directly from the databases**, and it computes Required Bytes, Actual Bytes and the exact decomposition. Outputs go to `artifacts/equivalence/<label>/` (default `kaggle-v3`): `bytes_summary.csv`, `flat_keys.txt` and `nested_keys.txt` (C-6), `report.json`, and `samples/`. The run must end with `EQUIVALENCE: PASS`.
 
 ## 6. Automated tests (no Docker)
 
@@ -117,4 +133,8 @@ The following are not part of this phase:
 - JMeter plans and runner (Phase 7);
 - the analysis pipeline (Phase 8);
 - IaC and AWS (Phases 9–11; the researcher only);
-- the real Kaggle dataset (O-7).
+- AWS-hosted data loading (the same importer and hashes apply).
+
+## 9. Publishing evidence
+
+Committed evidence is text-free: byte accounting, C-6 key lists, headers, manifests and hashes (`docs/api-contracts/samples/kaggle-v3-local-prebenchmark/`). The response bodies and CRIR files contain scraped book text. They stay local under `artifacts/` (DS-10) and must match `LOCAL_ONLY_SHA256SUMS.txt` when regenerated.

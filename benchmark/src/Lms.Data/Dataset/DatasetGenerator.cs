@@ -24,7 +24,11 @@ public sealed record GeneratedDataset(
     GeneratorOptions Options,
     IReadOnlyList<BookDto> Books,
     IReadOnlyList<MemberDto> Members,
-    IReadOnlyList<LoanDto> Loans);
+    IReadOnlyList<LoanDto> Loans)
+{
+    /// <summary>Pinned research-source details when books come from the Kaggle dataset; null for the TEMPORARY fixture.</summary>
+    public BooksSourceInfo? BooksSourceDetail { get; init; }
+}
 
 /// <summary>
 /// Deterministic generator for the three service-owned datasets (doc 03 §2.3; DECISION-004 O-4/O-8).
@@ -37,20 +41,29 @@ public static class DatasetGenerator
     private const ulong BookStream = 1, MemberStream = 2, LoanStream = 3;
     private static readonly DateOnly LoanEpoch = new(2025, 1, 1);
 
-    public static GeneratedDataset Generate(GeneratorOptions o)
+    /// <summary>
+    /// Members and loans are always generated from the seed. Books are either the TEMPORARY fixture (default,
+    /// used by the automated tests) or the imported research source (<paramref name="researchBooks"/>).
+    /// </summary>
+    public static GeneratedDataset Generate(GeneratorOptions o, BooksImport? researchBooks = null)
     {
-        Validate(o);
-        var books = BookFixture.Generate(o.FixtureBookCount, SplitMix64.ForStream(o.Seed, BookStream));
+        var books = researchBooks is null
+            ? BookFixture.Generate(o.FixtureBookCount, SplitMix64.ForStream(o.Seed, BookStream))
+            : [.. researchBooks.Books];
+        Validate(o, books.Count);
         var members = GenerateMembers(o, SplitMix64.ForStream(o.Seed, MemberStream));
         var loans = GenerateLoans(o, books.Count, SplitMix64.ForStream(o.Seed, LoanStream));
-        return new GeneratedDataset(BookFixture.SourceLabel, o, books, members, loans);
+        return new GeneratedDataset(researchBooks is null ? BookFixture.SourceLabel : KaggleBooksSource.SourceLabel, o, books, members, loans)
+        {
+            BooksSourceDetail = researchBooks?.Info,
+        };
     }
 
-    private static void Validate(GeneratorOptions o)
+    private static void Validate(GeneratorOptions o, int bookCount)
     {
         if (o.TargetMembers < 1 || o.LoansPerTarget < 1) throw new ArgumentException("M and L must be >= 1.");
         if (o.MemberCount < o.TargetMembers) throw new ArgumentException("MemberCount must be >= TargetMembers.");
-        if (o.FixtureBookCount < o.TargetMembers * o.LoansPerTarget)
+        if (bookCount < o.TargetMembers * o.LoansPerTarget)
             throw new ArgumentException("Book count must be >= M*L so target loans can use distinct books.");
     }
 

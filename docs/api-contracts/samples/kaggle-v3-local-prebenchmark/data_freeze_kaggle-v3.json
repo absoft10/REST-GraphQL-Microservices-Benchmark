@@ -1,0 +1,141 @@
+{
+  "label": "kaggle-v3",
+  "checkedUtc": "2026-11-01T21:22:10Z",
+  "passed": true,
+  "checks": [
+    {
+      "name": "content-hash catalog.book",
+      "passed": true,
+      "detail": "db=dd40286a317d42092e9730fdc9da5312291481f6fb749b1dabf1427fa9625201 manifest=dd40286a317d42092e9730fdc9da5312291481f6fb749b1dabf1427fa9625201"
+    },
+    {
+      "name": "row-count catalog.book",
+      "passed": true,
+      "detail": "db=103063 manifest=103063"
+    },
+    {
+      "name": "content-hash members.member",
+      "passed": true,
+      "detail": "db=2bf36a6d05bb0e53a2b02564703dd9b28bac149ce565979490aedf8d18461ec6 manifest=2bf36a6d05bb0e53a2b02564703dd9b28bac149ce565979490aedf8d18461ec6"
+    },
+    {
+      "name": "row-count members.member",
+      "passed": true,
+      "detail": "db=10000 manifest=10000"
+    },
+    {
+      "name": "content-hash loans.loan",
+      "passed": true,
+      "detail": "db=611dffd215b958d40e3be4d8c2c9045f3f6bc06f59b9d11f18edb1a0421cd17c manifest=611dffd215b958d40e3be4d8c2c9045f3f6bc06f59b9d11f18edb1a0421cd17c"
+    },
+    {
+      "name": "row-count loans.loan",
+      "passed": true,
+      "detail": "db=100933 manifest=100933"
+    },
+    {
+      "name": "count_big catalog.book",
+      "passed": true,
+      "detail": "count_big=103063"
+    },
+    {
+      "name": "count_big members.member",
+      "passed": true,
+      "detail": "count_big=10000"
+    },
+    {
+      "name": "count_big loans.loan",
+      "passed": true,
+      "detail": "count_big=100933"
+    },
+    {
+      "name": "orphans loan.member_id",
+      "passed": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "orphans loan.book_id",
+      "passed": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "loan is_returned/return_date consistency",
+      "passed": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "target members 1..M exist",
+      "passed": true,
+      "detail": "M=10"
+    },
+    {
+      "name": "each target member has exactly L loans",
+      "passed": true,
+      "detail": "L=5"
+    },
+    {
+      "name": "target loans use distinct books",
+      "passed": true,
+      "detail": "loans=50"
+    },
+    {
+      "name": "target books present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "target loans alternate returned/unreturned by loanId",
+      "passed": true,
+      "detail": "odd=returned, even=null"
+    },
+    {
+      "name": "dataset_info lms_catalog",
+      "passed": true,
+      "detail": "label=kaggle-v3 books_source=KAGGLE_elvinrustam_books-dataset_v3"
+    },
+    {
+      "name": "dataset_info lms_members",
+      "passed": true,
+      "detail": "label=kaggle-v3 books_source=KAGGLE_elvinrustam_books-dataset_v3"
+    },
+    {
+      "name": "dataset_info lms_loans",
+      "passed": true,
+      "detail": "label=kaggle-v3 books_source=KAGGLE_elvinrustam_books-dataset_v3"
+    },
+    {
+      "name": "research source pinned (archive sha256)",
+      "passed": true,
+      "detail": "manifest=e42f3dc8a64ed4a549bcf956b4f712452978ede7aa8ce49d3cdd27a3bf831839 db=e42f3dc8a64ed4a549bcf956b4f712452978ede7aa8ce49d3cdd27a3bf831839"
+    },
+    {
+      "name": "research source pinned (entry sha256)",
+      "passed": true,
+      "detail": "BooksDatasetClean.csv manifest=e59f031f238b44b7c470ec4926e1a5c231b5cf00be9923308c19e577dd4bda53 db=e59f031f238b44b7c470ec4926e1a5c231b5cf00be9923308c19e577dd4bda53"
+    },
+    {
+      "name": "all source rows imported",
+      "passed": true,
+      "detail": "source=103063 db=103063"
+    },
+    {
+      "name": "compatibility level pinned",
+      "passed": true,
+      "detail": "expected 160"
+    }
+  ],
+  "environment": {
+    "server_version": "17.0.4025.3",
+    "server_edition": "Express Edition (64-bit)",
+    "books_source": "KAGGLE_elvinrustam_books-dataset_v3",
+    "lms_catalog.collation": "SQL_Latin1_General_CP1_CI_AS",
+    "lms_catalog.compatibility_level": "160",
+    "lms_catalog.schema_sha256": "7b4e6f38fed6f3e258c8ddbcc322ae9eb91597bc10dec1081f85b8e3fdaa20f6",
+    "lms_members.collation": "SQL_Latin1_General_CP1_CI_AS",
+    "lms_members.compatibility_level": "160",
+    "lms_members.schema_sha256": "0801276e0529e6e8aec008ae511b8cf5e1df31dce5e8c5f1e89b1890e844d410",
+    "lms_loans.collation": "SQL_Latin1_General_CP1_CI_AS",
+    "lms_loans.compatibility_level": "160",
+    "lms_loans.schema_sha256": "73a807aa8a4202b94d1bf4f7793b41d645b223bb92410a58e7ad7203d9da822e"
+  }
+}

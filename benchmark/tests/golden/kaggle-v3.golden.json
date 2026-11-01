@@ -1,0 +1,30 @@
+{
+  "description": "Golden values for the research dataset (local pre-benchmark validation). Text-free: hashes and counts only. Verified 2026-11-02 by the C# importer, the database, and an independent re-implementation of rules R1-R9.",
+  "source": {
+    "datasetRef": "elvinrustam/books-dataset",
+    "kaggleVersion": 3,
+    "archiveSha256": "e42f3dc8a64ed4a549bcf956b4f712452978ede7aa8ce49d3cdd27a3bf831839",
+    "entryName": "BooksDatasetClean.csv",
+    "entrySha256": "e59f031f238b44b7c470ec4926e1a5c231b5cf00be9923308c19e577dd4bda53"
+  },
+  "generator": { "seed": 20261101, "memberCount": 10000, "targetMembers": 10, "loansPerTarget": 5, "maxLoansOtherMembers": 20 },
+  "rows": { "catalog.book": 103063, "members.member": 10000, "loans.loan": 100933 },
+  "canonicalSha256": {
+    "catalog.book": "dd40286a317d42092e9730fdc9da5312291481f6fb749b1dabf1427fa9625201",
+    "members.member": "2bf36a6d05bb0e53a2b02564703dd9b28bac149ce565979490aedf8d18461ec6",
+    "loans.loan": "611dffd215b958d40e3be4d8c2c9045f3f6bc06f59b9d11f18edb1a0421cd17c"
+  },
+  "importStats": {
+    "valuesChangedByNormalization": 76966,
+    "nullDescription": 32859,
+    "nullCategory": 26161,
+    "nullPublisher": 8,
+    "nullPrice": 0,
+    "authorsBarePlaceholderBy": 1043,
+    "pricesWithOneDecimalInSource": 3026
+  },
+  "crir": {
+    "flat": { "offset": 0, "limit": 100, "requiredBytes": 18675, "jcsSha256": "9d0ea3f5dd541bee6fbbc5a734d5cb35a49f0e11ac3c49b14323e9d7b55fe5de" },
+    "nested": { "offset": 0, "limit": 10, "requiredBytes": 9560, "jcsSha256": "c15b7bc8e729b3c9c50231b62a7b7ae61a123482f92b91010e8e1d1306e3fe46" }
+  }
+}

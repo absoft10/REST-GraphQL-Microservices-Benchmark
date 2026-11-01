@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Last updated | 2026-11-01 (Phase 0) |
-| **Overall state** | **ARCHITECTURAL BASELINE APPROVED (DECISION-002). The experimental protocol is NOT frozen.** Dataset-dependent definitions are provisional, and the Tier 2/3/4 parameters are open. |
+| Last updated | 2026-11-02 (Task 4: research dataset) |
+| **Overall state** | **ARCHITECTURAL BASELINE APPROVED (DECISION-002). The experimental protocol is NOT frozen.** Dataset-dependent definitions are final (DECISION-009); the Tier 2/3/4 parameters are open. |
 | Rule | An item moves to "approved" only when a DECISION file records it. The protocol is declared frozen only in a future `PROTOCOL_FREEZE.md`, created after every item in §2 and §3 is closed. |
 
 ## 1. Approved (recorded)
@@ -18,25 +18,21 @@
 | O-6, O-9, O-10, O-11 (D-4a build toggle, D-5 no writes), O-13 | DECISION-006 |
 | O-12 / AM-2 `_dbq.csv` aggregation | DECISION-007 |
 | O-14 version control | DECISION-008 |
+| **Research dataset (DS-1 … DS-12)**: Kaggle `elvinrustam/books-dataset` v3, `BooksDatasetClean.csv`; 103,063 books; rules R1–R9; book columns, field names, DDL, golden values final | DECISION-009 (closes DECISION-004 O-7) |
 
 ## 1a. Implementation specifications
 
 | Item | Location | State |
 |---|---|---|
-| API contracts v0.1-provisional (Task 3): REST, GraphQL SDL and queries, N-RM sequence, internal API, errors and pagination, Required Bytes spec, CRIR JSON Schemas | `docs/api-contracts/` | Implements DECISION-002 … 008. Book fields ⟨P⟩. Implementation-level choices are listed for review in `docs/api-contracts/README.md` §3. |
-
-| Implementation and local validation (Tasks 4–6) | `benchmark/` (`README.md` = run guide); `docs/milestone2/Milestone2_Progress_Tracker.md` | Built and tested locally on LocalDB with the TEMPORARY book fixture: 125/125 tests passing (70 unit + 55 LocalDB integration; TRX, 2026-11-01). The five-configuration equivalence passes. |
+| API contracts v0.3 (Tasks 3–4): REST, GraphQL SDL and queries, N-RM sequence, internal API, errors and pagination, Required Bytes spec, CRIR JSON Schemas | `docs/api-contracts/` | Implements DECISION-002 … 009. Book fields final (DECISION-009). §3 implementation choices approved 2026-11-01. |
+| Implementation and local validation (Tasks 4–6) | `benchmark/` (`README.md` = run guide); `docs/milestone2/Milestone2_Progress_Tracker.md` | Research dataset imported into LocalDB (DECISION-009); data freeze 24/24 PASS; 151/151 tests passing (96 unit + 55 LocalDB integration; TRX, 2026-11-02); live five-configuration equivalence PASS on the research data. Local pre-benchmark validation only. |
 
 ## 2. Provisional (approved in principle; pending verification)
 
 | Item | Pending on | Unblocks |
 |---|---|---|
-| Book column set and cleaning rules (O-4 books) | O-7 dataset download and inspection | Phase 2 data |
-| Book field names in O-1, O-2 and the CRIR | O-7 | Phase 2 golden files, Phase 4 contracts |
-| `book` DDL, dataset volumes, dataset licence status | O-7 | Phase 2 |
-| Golden files and CRIR oracle | O-7 + Phase 2 | Phase 5 |
 | Rule 7 string-escaping encoder `Create(UnicodeRanges.All)` | SER-1 to SER-6 + researcher acknowledgement | Phase 4 exit |
-| Decimal and date GraphQL scalar mapping (rules 5–6) | Verification against the pinned HotChocolate version | Phase 4 exit |
+| Decimal and date GraphQL scalar mapping (rules 5–6) | Verified by tests (identical tokens across stacks, CHANGELOG C-9); researcher acknowledgement pending | Phase 4 exit |
 
 ## 3. Open decisions (not approved)
 

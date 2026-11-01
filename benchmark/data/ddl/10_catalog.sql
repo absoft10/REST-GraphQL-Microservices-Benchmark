@@ -1,6 +1,6 @@
 -- 10_catalog.sql — Catalog service database. Run against [$(CatalogDb)].
--- !!! catalog.book is PROVISIONAL: column set follows docs/api-contracts/rest-api.md §1.1 and will be
--- !!! finalised only after the Kaggle dataset has been downloaded and verified (DECISION-004, O-7).
+-- catalog.book: FINAL (DECISION-009). Columns map one-to-one onto BooksDatasetClean.csv of Kaggle
+-- elvinrustam/books-dataset v3; column lengths verified against the data (docs/milestone2/09 §5).
 IF SCHEMA_ID(N'catalog') IS NULL EXEC(N'CREATE SCHEMA catalog');
 GO
 IF SCHEMA_ID(N'meta') IS NULL EXEC(N'CREATE SCHEMA meta');

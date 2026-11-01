@@ -1,0 +1,58 @@
+{
+  "label": "kaggle-v3",
+  "booksSource": "KAGGLE_elvinrustam_books-dataset_v3",
+  "generatorVersion": "lms-dataset-generator/1.0",
+  "options": {
+    "seed": 20261101,
+    "fixtureBookCount": 2000,
+    "memberCount": 10000,
+    "targetMembers": 10,
+    "loansPerTarget": 5,
+    "maxLoansOtherMembers": 20
+  },
+  "tables": [
+    {
+      "table": "catalog.book",
+      "rowCount": 103063,
+      "canonicalSha256": "dd40286a317d42092e9730fdc9da5312291481f6fb749b1dabf1427fa9625201",
+      "csvFile": "books.csv",
+      "csvSha256": "a03acdb4c7837c0fc25a0752ae50972845df2d7e73df0125a96879f6c95f95ec"
+    },
+    {
+      "table": "members.member",
+      "rowCount": 10000,
+      "canonicalSha256": "2bf36a6d05bb0e53a2b02564703dd9b28bac149ce565979490aedf8d18461ec6",
+      "csvFile": "members.csv",
+      "csvSha256": "6ee003acf22df4b68f0b04e1e08893e63f1b4e15e01b11397cef4c34d5c10ceb"
+    },
+    {
+      "table": "loans.loan",
+      "rowCount": 100933,
+      "canonicalSha256": "611dffd215b958d40e3be4d8c2c9045f3f6bc06f59b9d11f18edb1a0421cd17c",
+      "csvFile": "loans.csv",
+      "csvSha256": "98f716f63b2c39c5c1d1411587d14fd302e599326db4299d95bf20c38bc74d66"
+    }
+  ],
+  "createdUtc": "2026-11-01T21:21:53Z",
+  "booksSourceDetail": {
+    "datasetRef": "elvinrustam/books-dataset",
+    "kaggleVersion": 3,
+    "archiveFileName": "archive.zip",
+    "archiveSha256": "e42f3dc8a64ed4a549bcf956b4f712452978ede7aa8ce49d3cdd27a3bf831839",
+    "entryName": "BooksDatasetClean.csv",
+    "entrySha256": "e59f031f238b44b7c470ec4926e1a5c231b5cf00be9923308c19e577dd4bda53",
+    "rulesVersion": "kaggle-books-clean-rules/1.0 (R1-R9, docs/milestone2/09 \u00A76)",
+    "stats": {
+      "sourceRows": 103063,
+      "valuesChangedByNormalization": 76966,
+      "nullDescription": 32859,
+      "nullCategory": 26161,
+      "nullPublisher": 8,
+      "nullPrice": 0,
+      "nullPublishMonth": 0,
+      "nullPublishYear": 0,
+      "authorsBarePlaceholderBy": 1043,
+      "pricesWithOneDecimalInSource": 3026
+    }
+  }
+}

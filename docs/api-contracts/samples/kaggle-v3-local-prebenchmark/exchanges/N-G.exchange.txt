@@ -1,0 +1,8 @@
+POST http://localhost:5202/graphql
+{"query":"query NestedMembers($offset: Int!, $limit: Int!) { members(offset: $offset, limit: $limit) { memberId firstName lastName loans { loanId loanDate returnDate book { bookId title authors } } } }","operationName":"NestedMembers","variables":{"offset":0,"limit":10}}
+
+HTTP 200
+Content-Length: 9636
+Content-Type: application/json; charset=utf-8
+Date: Sun, 01 Nov 2026 21:22:29 GMT
+Vary: Accept

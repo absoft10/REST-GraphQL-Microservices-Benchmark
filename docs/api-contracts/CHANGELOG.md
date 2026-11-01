@@ -1,5 +1,12 @@
 # API Contract Change Log
 
+## v0.3 (2026-11-02): book fields final (DECISION-009)
+
+| # | Change | Impact |
+|---|---|---|
+| C-12 | Every provisional ⟨P⟩ marker is resolved. The book representation maps one-to-one onto `BooksDatasetClean.csv` of Kaggle `elvinrustam/books-dataset` v3. `rest-api.md` §1.1 now lists the source column of each field. | **No field, type, nullability, route, query or required-field list changed.** Documentation only. |
+| C-13 | Live validation on the research dataset: the five configurations equal the oracle, with byte accounting in [samples/kaggle-v3-local-prebenchmark/](samples/kaggle-v3-local-prebenchmark/README.md) | Local pre-benchmark evidence. These are not experimental results. |
+
 ## v0.2-provisional (2026-11-01): findings from implementation (Tasks 4–6)
 
 Each entry below was found while implementing the contract and testing it on LocalDB. **None changes an approved scientific decision.** Entries marked ⚠ need a researcher decision.

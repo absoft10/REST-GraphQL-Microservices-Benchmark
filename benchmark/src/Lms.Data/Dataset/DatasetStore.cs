@@ -61,6 +61,14 @@ public static class DatasetStore
             ["canonical_sha256"] = t.CanonicalSha256,
             ["loaded_utc"] = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
         };
+        if (manifest.BooksSourceDetail is { } src)
+        {
+            info["source_dataset"] = $"{src.DatasetRef} v{src.KaggleVersion}";
+            info["source_archive_sha256"] = src.ArchiveSha256;
+            info["source_entry"] = src.EntryName;
+            info["source_entry_sha256"] = src.EntrySha256;
+            info["cleaning_rules"] = src.RulesVersion;
+        }
         foreach (var (k, v) in info)
         {
             await using var cmd = new SqlCommand("INSERT INTO meta.dataset_info (info_key, info_value) VALUES (@k, @v)", conn, tx);

@@ -13,15 +13,18 @@ internal static class Cli
 {
     private const string Usage = """
         lms-bench db init       [--server S] [--prefix lms_]
-        lms-bench db seed       [--server S] [--prefix lms_] [--label L] [--seed N] [--books-fixture N] [--members N]
+        lms-bench db seed       [--server S] [--prefix lms_] [--label L] [--seed N] [--members N]
                                 [--target-members M] [--loans-per-target L] [--max-loans-other N] --out DIR
+                                [--books-source fixture|kaggle] [--books-fixture N] [--books-archive PATH]
+                                (kaggle = pinned research dataset elvinrustam/books-dataset v3; default archive
+                                 data/source/kaggle-books-dataset-v3/archive.zip, SHA-256 verified)
         lms-bench db verify     [--server S] [--prefix lms_] --manifest DIR/manifest.json [--out FILE]
         lms-bench db reset      [--server S] [--prefix lms_]      (drop + init; DESTRUCTIVE for the three named DBs)
         lms-bench db drop       [--server S] [--prefix lms_]
         lms-bench equivalence   --rest URL --graphql URL [--server S] [--prefix lms_]
                                 [--flat-limit 100] [--nested-limit 10] [--offset 0] --out DIR
         Defaults: --server "(localdb)\MSSQLLocalDB", --prefix lms_. Env LMS_SQL_CONNECTION_TEMPLATE (with {database}) overrides auth.
-        Books: only the TEMPORARY fixture is available until the Kaggle dataset is verified (DECISION-004, O-7).
+        Books: 'fixture' is TEMPORARY test data (automated tests); 'kaggle' is the research dataset (DECISION-009).
         """;
 
     public static async Task<int> RunAsync(string[] args)
@@ -52,8 +55,19 @@ internal static class Cli
 
     private static async Task<int> SeedAsync(DatabaseSet dbs, Dictionary<string, string> o)
     {
-        if (o.TryGetValue("books-source", out var src) && src != "fixture")
-            throw new ArgumentException("Only --books-source fixture is available: the Kaggle dataset has not been verified (O-7).");
+        var src = Opt(o, "books-source", "fixture");
+        BooksImport? research = src switch
+        {
+            "fixture" => null,
+            "kaggle" => KaggleBooksImporter.Import(Opt(o, "books-archive", KaggleBooksSource.DefaultArchivePath)),
+            _ => throw new ArgumentException("--books-source must be 'fixture' (TEMPORARY test data) or 'kaggle' (research dataset)."),
+        };
+        if (research is not null)
+        {
+            var s = research.Info.Stats;
+            Console.WriteLine($"Imported {s.SourceRows} books from {research.Info.DatasetRef} v{research.Info.KaggleVersion} ({research.Info.EntryName}, sha256 {research.Info.EntrySha256})");
+            Console.WriteLine($"  rules {research.Info.RulesVersion}: changed by NFC/trim={s.ValuesChangedByNormalization} NULL description={s.NullDescription} category={s.NullCategory} publisher={s.NullPublisher} price={s.NullPrice} | bare \"By\" authors kept={s.AuthorsBarePlaceholderBy} | one-decimal prices={s.PricesWithOneDecimalInSource}");
+        }
         var options = new GeneratorOptions
         {
             Seed = ulong.Parse(Opt(o, "seed", "20261101"), CultureInfo.InvariantCulture),
@@ -63,9 +77,9 @@ internal static class Cli
             LoansPerTarget = Int(o, "loans-per-target", 5),
             MaxLoansOtherMembers = Int(o, "max-loans-other", 20),
         };
-        var label = Opt(o, "label", "local-fixture");
+        var label = Opt(o, "label", research is null ? "local-fixture" : "kaggle-v3");
         var outDir = Required(o, "out");
-        var data = DatasetGenerator.Generate(options);
+        var data = DatasetGenerator.Generate(options, research);
         var manifest = DatasetArtifacts.Write(data, label, outDir);
         await DdlRunner.InitializeAsync(dbs);
         await DatasetStore.LoadAsync(dbs, data, manifest);

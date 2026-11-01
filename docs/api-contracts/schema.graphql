@@ -1,5 +1,5 @@
-# GraphQL schema for Lms.Edge.GraphQL. Contract v0.1-provisional (2026-11-01).
-# ⟨P⟩ = provisional until the book dataset has been verified (DECISION-004, O-7).
+# GraphQL schema for Lms.Edge.GraphQL. Contract v0.3 (2026-11-02).
+# Book fields are final (DECISION-009): one-to-one with BooksDatasetClean.csv, Kaggle elvinrustam/books-dataset v3.
 # Scalar names "Decimal" and "Date" are the contract names. The HotChocolate scalar
 # bound to each one is pinned at implementation, so that values serialize as
 # DECISION-005 (SP-1) requires:
@@ -18,17 +18,17 @@ type Query {
   members(offset: Int!, limit: Int!): [Member!]!
 }
 
-"Full Book model; clients select fields. ⟨P⟩ field set = verified source columns."
+"Full Book model; clients select fields. Field set = verified source columns."
 type Book {
   bookId: Int!
-  title: String!          # ⟨P⟩
-  authors: String!        # ⟨P⟩
-  description: String     # ⟨P⟩ if present in source
-  category: String        # ⟨P⟩
-  publisher: String       # ⟨P⟩ if present in source
-  price: Decimal          # ⟨P⟩
-  publishMonth: String    # ⟨P⟩ if present in source
-  publishYear: Int        # ⟨P⟩
+  title: String!          # source: Title
+  authors: String!        # source: Authors
+  description: String     # source: Description
+  category: String        # source: Category
+  publisher: String       # source: Publisher
+  price: Decimal          # source: Price Starting With ($)
+  publishMonth: String    # source: Publish Date (Month)
+  publishYear: Int        # source: Publish Date (Year)
 }
 
 type Member {

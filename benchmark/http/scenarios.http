@@ -1,7 +1,7 @@
 ### LMS benchmark — the five experimental scenarios (docs/api-contracts). Executable with the VS Code
 ### "REST Client" extension, Visual Studio 2022+ or JetBrains HTTP Client.
-### Requires: scripts/db-init.ps1 (seed 20261101, TEMPORARY book fixture — NOT research data) and
-### scripts/start-services.ps1. N = 100, M = 10 are the Tier 2 placeholders.
+### Requires: scripts/db-init.ps1 (default: research dataset elvinrustam/books-dataset v3, seed 20261101) and
+### scripts/start-services.ps1. N = 100, M = 10 are the Tier 2 placeholders. Local functional examples only.
 
 @rest = http://localhost:5201
 @graphql = http://localhost:5202
@@ -35,10 +35,10 @@ Accept: application/json
 Accept-Encoding: identity
 
 ### 4c. N-RM call 3 — books of the bookIds from 4b, SORTED and de-duplicated.
-### The list below is valid for seed 20261101 (captured by scripts/verify-equivalence.ps1,
-### artifacts/equivalence/local-fixture/samples/N-RM_call3.exchange.txt). Other seeds: take it from that file,
-### or use the Postman collection, which computes it from the 4b response.
-GET {{rest}}/api/books?ids=17,26,74,163,167,180,200,209,276,339,369,379,411,415,438,474,493,498,512,537,774,792,793,813,947,972,1003,1073,1074,1093,1109,1130,1137,1174,1183,1318,1459,1479,1545,1546,1599,1628,1807,1840,1841,1854,1870,1891,1903,1980
+### The list below is valid for the research dataset (kaggle-v3) with seed 20261101 (captured by
+### scripts/verify-equivalence.ps1 -Label kaggle-v3: artifacts/equivalence/kaggle-v3/samples/N-RM_call3.exchange.txt).
+### For the TEMPORARY fixture or other seeds take it from that file, or use the Postman collection (computed from 4b).
+GET {{rest}}/api/books?ids=838,2329,3778,6983,7957,9648,11003,12639,12856,17637,18097,19531,19933,24650,25559,27459,28984,30739,36514,38399,45733,46223,46510,49166,51527,52634,55001,56371,56924,57398,60609,61848,63057,63465,64044,64930,75099,75319,75679,79122,80171,86850,91023,91146,93908,97204,98233,100095,100874,102851
 Accept: application/json
 Accept-Encoding: identity
 

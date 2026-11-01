@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| Version | **v0.2-provisional** (2026-11-01). Implementation findings are in [CHANGELOG.md](CHANGELOG.md). The implementation is in `benchmark/`, with tests in `benchmark/tests/`. Live samples are in [samples/local-fixture/](samples/local-fixture/README.md) (TEMPORARY fixture). Postman: [postman/](postman/LMS-Benchmark.postman_collection.json). `.http`: `benchmark/http/scenarios.http`. |
+| Version | **v0.3** (2026-11-02). Book fields final (DECISION-009); changes are in [CHANGELOG.md](CHANGELOG.md). The implementation is in `benchmark/`, with tests in `benchmark/tests/`. Local pre-benchmark evidence on the research dataset is in [samples/kaggle-v3-local-prebenchmark/](samples/kaggle-v3-local-prebenchmark/README.md). TEMPORARY-fixture samples are in [samples/local-fixture/](samples/local-fixture/README.md). Postman: [postman/](postman/LMS-Benchmark.postman_collection.json). `.http`: `benchmark/http/scenarios.http`. |
 | §3 choices | **Approved by the researcher, 2026-11-01** |
-| Status | The structure, routes, parameters, ordering, error handling and Required Bytes algorithm implement **approved** decisions. **Book fields are PROVISIONAL** until the Kaggle dataset has been verified (DECISION-004, O-7). Those elements are marked **⟨P⟩** in every file. |
+| Status | The structure, routes, parameters, ordering, error handling and Required Bytes algorithm implement **approved** decisions. **Book fields are final** (DECISION-009, 2026-11-02): they map one-to-one onto `BooksDatasetClean.csv` of Kaggle `elvinrustam/books-dataset` v3. No field changed from the provisional contract. |
 | Authority | These contracts implement DECISION-002 … DECISION-008 and doc 03. They introduce **no new scientific decision**. Implementation-level choices made here (error format, validation limits, header details) are listed in §3 for your review. |
 
 ## Files
@@ -33,10 +33,10 @@
 
 N, O (= 0), M and L are Tier 2. The placeholders are N = 100, M = 10 and L = 5. They are supplied as configuration and never hard-coded.
 
-## 2. Provisional elements ⟨P⟩ (finalised after O-7)
+## 2. Formerly provisional elements (finalised 2026-11-02, DECISION-009)
 
-- **Book resource fields:** names, types, nullability, and the full set (the full representation = every source column after cleaning).
-- **Book required fields:** `bookId, title, authors, category, price, publishYear`. The meaning is approved; the names map to the verified columns.
+- **Book resource fields:** names, types, nullability and the full set are confirmed against the dataset. The full representation = every source column after cleaning rules R1–R9.
+- **Book required fields:** `bookId, title, authors, category, price, publishYear`. The names map to the verified columns `Title, Authors, Category, Price Starting With ($), Publish Date (Year)`.
 - **Example values:** every example in these files uses obvious placeholders (`"T1"`, `"A1"`). They are not data.
 
 ## 3. Implementation-level choices made in these contracts (for your review; not scientific decisions)

@@ -5,7 +5,7 @@
            crir_*.jcs.json, report.json, samples/*.response.json + *.exchange.txt
 #>
 param(
-    [string]$Label = "local-fixture",
+    [string]$Label = "kaggle-v3",
     [int]$FlatLimit = 100, [int]$NestedLimit = 10, [int]$Offset = 0,
     [string]$Server = "(localdb)\MSSQLLocalDB", [string]$Prefix = "lms_",
     [string]$Configuration = "Debug"

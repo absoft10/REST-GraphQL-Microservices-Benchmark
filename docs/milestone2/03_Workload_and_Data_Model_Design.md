@@ -34,6 +34,8 @@ All numeric values below (page sizes, member and loan counts, row counts) are **
 
 The paper describes the flat workload as "getting books lists, basic information on the book". A fixed page of a list endpoint is the closest reproducible form of that description.
 
+**Limitation on the research dataset (DS-9, DECISION-009).** The first 100 books in file order have 59.0% missing descriptions, against 31.9% across all 103,063 books. The flat record set is kept as approved and the limitation is disclosed. Changing record selection or pagination needs researcher authorisation.
+
 ### 1.2 Nested retrieval [REQ M2 §2.1]
 
 **Task:** retrieve a fixed page of members, each member's loans, and the book of each loan. The chain is **member → loans → book**. It uses the three entities named in the manuscript (§III-A-2: "users, loans, and books") and crosses all three domain services.

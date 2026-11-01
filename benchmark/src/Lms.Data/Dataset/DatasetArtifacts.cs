@@ -25,6 +25,9 @@ public sealed record DatasetManifest(
     };
 
     public TableManifest Table(string name) => Tables.Single(t => t.Table == name);
+
+    /// <summary>Pinned research-source provenance (archive/entry SHA-256, Kaggle version, rule version, rule statistics).</summary>
+    public BooksSourceInfo? BooksSourceDetail { get; init; }
 }
 
 public static class DatasetArtifacts
@@ -48,7 +51,10 @@ public static class DatasetArtifacts
                 data.Loans.Select(l => new[] { I(l.LoanId), I(l.MemberId), I(l.BookId), Dt(l.LoanDate), Dt(l.ReturnDate), l.IsReturned ? "1" : "0" })),
         };
         var manifest = new DatasetManifest(label, data.BooksSource, DatasetGenerator.GeneratorVersion, data.Options, tables,
-            DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture));
+            DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture))
+        {
+            BooksSourceDetail = data.BooksSourceDetail,
+        };
         File.WriteAllText(Path.Combine(directory, "manifest.json"), JsonSerializer.Serialize(manifest, DatasetManifest.Json), new UTF8Encoding(false));
         return manifest;
     }

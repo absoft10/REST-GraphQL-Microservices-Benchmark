@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Decisions | DECISION-003 (O-1, O-2, O-3 / CL-1), DECISION-005 (SP-1), DECISION-004 (O-8) |
-| Status | The algorithm is **approved**. Book field names are ⟨P⟩ until O-7. |
+| Status | The algorithm is **approved**. Book field names are final (DECISION-009). |
 | Implementation | One C# library `benchmark/src/Lms.RequiredBytes` (CHANGELOG C-6; originally planned as a Python module). It is used by `lms-bench equivalence` and the tests. The analysis consumes its `bytes_summary.csv`. It is never re-implemented elsewhere. |
 
 ## 1. Definitions
@@ -27,11 +27,11 @@ The value is a JSON array of N objects, ordered by `bookId` ascending. Each obje
 | Key | Type | Null allowed |
 |---|---|---|
 | `bookId` | integer | no |
-| `title` | string | no ⟨P⟩ |
-| `authors` | string | no ⟨P⟩ |
-| `category` | string | yes ⟨P⟩ |
-| `price` | number | yes ⟨P⟩ |
-| `publishYear` | integer | yes ⟨P⟩ |
+| `title` | string | no |
+| `authors` | string | no |
+| `category` | string | yes |
+| `price` | number | yes |
+| `publishYear` | integer | yes |
 
 ### 2.2 Nested
 
@@ -41,7 +41,7 @@ The value is a JSON array of M member objects, ordered by `memberId`:
 |---|---|
 | member | `memberId` (int), `firstName` (string), `lastName` (string), `loans` (array, ordered by `loanId`, exactly L items) |
 | loan | `loanId` (int), `loanDate` (`"YYYY-MM-DD"`), `returnDate` (`"YYYY-MM-DD"` or `null`), `book` (object) |
-| book | `bookId` (int), `title` (string ⟨P⟩), `authors` (string ⟨P⟩) |
+| book | `bookId` (int), `title` (string), `authors` (string) |
 
 The linking keys (`loan.memberId`, `loan.bookId`) are **not** in the CRIR. The relationships are expressed by nesting.
 

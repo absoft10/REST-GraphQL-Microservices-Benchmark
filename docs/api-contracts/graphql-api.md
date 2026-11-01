@@ -27,7 +27,7 @@ query FlatBooks($offset: Int!, $limit: Int!) { books(offset: $offset, limit: $li
 query NestedMembers($offset: Int!, $limit: Int!) { members(offset: $offset, limit: $limit) { memberId firstName lastName loans { loanId loanDate returnDate book { bookId title authors } } } }
 ```
 
-These are ⟨P⟩: the book field names may change after O-7.
+The book field names are final (DECISION-009).
 
 - **Persisted queries, automatic persisted queries and query batching:** disabled (B-7).
 - **Response:** `200 application/json; charset=utf-8`, body `{"data":{...}}` on success. There is no `errors` key on success, and no `extensions` key; any server timing or tracing extensions are disabled.
@@ -68,8 +68,8 @@ Internal calls: exactly 3, matching N-RC and N-RM ([internal-domain-api.md](inte
 
 | Configuration | Operation | Selected fields |
 |---|---|---|
-| F-G | `FlatBooks` | `bookId title authors category price publishYear` ⟨P⟩ |
-| N-G | `NestedMembers` | `memberId firstName lastName`; `loans { loanId loanDate returnDate }`; `book { bookId title authors }` ⟨P⟩ |
+| F-G | `FlatBooks` | `bookId title authors category price publishYear` |
+| N-G | `NestedMembers` | `memberId firstName lastName`; `loans { loanId loanDate returnDate }`; `book { bookId title authors }` |
 
 ## 4. Errors
 

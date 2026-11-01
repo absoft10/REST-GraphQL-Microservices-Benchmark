@@ -74,9 +74,21 @@ public static class DataFreezeVerifier
         {
             var info = await DatasetStore.ReadDatasetInfoAsync(cs, ct);
             var ok = info.TryGetValue("label", out var lab) && lab == manifest.Label
-                     && info.TryGetValue("books_source", out var src) && src == manifest.BooksSource;
+                     && info.TryGetValue("books_source", out var booksSource) && booksSource == manifest.BooksSource;
             checks.Add(new($"dataset_info {new SqlConnectionStringBuilder(cs).InitialCatalog}", ok,
                 $"label={info.GetValueOrDefault("label")} books_source={info.GetValueOrDefault("books_source")}"));
+        }
+
+        if (manifest.BooksSourceDetail is { } src)
+        {
+            var cat = await DatasetStore.ReadDatasetInfoAsync(dbs.CatalogConnectionString, ct);
+            checks.Add(new("research source pinned (archive sha256)",
+                src.ArchiveSha256 == KaggleBooksSource.ArchiveSha256 && cat.GetValueOrDefault("source_archive_sha256") == src.ArchiveSha256,
+                $"manifest={src.ArchiveSha256} db={cat.GetValueOrDefault("source_archive_sha256")}"));
+            checks.Add(new("research source pinned (entry sha256)",
+                src.EntrySha256 == KaggleBooksSource.EntrySha256 && cat.GetValueOrDefault("source_entry_sha256") == src.EntrySha256,
+                $"{src.EntryName} manifest={src.EntrySha256} db={cat.GetValueOrDefault("source_entry_sha256")}"));
+            checks.Add(new("all source rows imported", src.Stats.SourceRows == books.Count, $"source={src.Stats.SourceRows} db={books.Count}"));
         }
 
         var env = new Dictionary<string, string>

@@ -1,0 +1,6 @@
+workload,config,required_bytes,actual_bytes,overfetch,envelope,nonrequired,formatting,multicall,calls,equivalent,compact
+flat,F-R,18675,58468,0.680595,0,39461,332,0,1,True,True
+flat,F-G,18675,19026,0.018448,19,0,332,0,1,True,True
+nested,N-RC,9560,39669,0.759006,0,30054,55,0,1,True,True
+nested,N-RM,9560,39221,0.756253,0,28653,55,953,3,True,True
+nested,N-G,9560,9636,0.007887,21,0,55,0,1,True,True
