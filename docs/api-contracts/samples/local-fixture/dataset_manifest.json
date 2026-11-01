@@ -1,0 +1,37 @@
+{
+  "label": "local-fixture",
+  "booksSource": "TEMPORARY_FIXTURE_NOT_RESEARCH_DATA",
+  "generatorVersion": "lms-dataset-generator/1.0",
+  "options": {
+    "seed": 20261101,
+    "fixtureBookCount": 2000,
+    "memberCount": 10000,
+    "targetMembers": 10,
+    "loansPerTarget": 5,
+    "maxLoansOtherMembers": 20
+  },
+  "tables": [
+    {
+      "table": "catalog.book",
+      "rowCount": 2000,
+      "canonicalSha256": "c2d698a8a695152d2713c86ad95b8c22f318ff60947d346ca87f611024d26c6a",
+      "csvFile": "books.csv",
+      "csvSha256": "892854f24b1d78bcabf92ffbf5d15356c5cba254d5e3e3ec02dc4062609bf0ca"
+    },
+    {
+      "table": "members.member",
+      "rowCount": 10000,
+      "canonicalSha256": "2bf36a6d05bb0e53a2b02564703dd9b28bac149ce565979490aedf8d18461ec6",
+      "csvFile": "members.csv",
+      "csvSha256": "6ee003acf22df4b68f0b04e1e08893e63f1b4e15e01b11397cef4c34d5c10ceb"
+    },
+    {
+      "table": "loans.loan",
+      "rowCount": 100966,
+      "canonicalSha256": "b866368606911dc2b7922d4cd88417216b6d197ec632a72a036b0c9d81f0403d",
+      "csvFile": "loans.csv",
+      "csvSha256": "ea529d358a2629ed0b42276d040a0da98fc585adc9cf474a723a506651c32bf3"
+    }
+  ],
+  "createdUtc": "2026-10-31T23:31:34Z"
+}

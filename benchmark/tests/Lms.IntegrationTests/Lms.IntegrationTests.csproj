@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Lms.Catalog.Service\Lms.Catalog.Service.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Members.Service\Lms.Members.Service.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Loans.Service\Lms.Loans.Service.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Edge.Rest\Lms.Edge.Rest.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Edge.GraphQL\Lms.Edge.GraphQL.csproj" />
+    <ProjectReference Include="..\..\src\Lms.RequiredBytes\Lms.RequiredBytes.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

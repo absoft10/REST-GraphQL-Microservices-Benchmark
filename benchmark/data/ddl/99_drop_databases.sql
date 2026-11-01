@@ -1,0 +1,7 @@
+-- 99_drop_databases.sql — reset helper. Run against [master]. DESTRUCTIVE for the three named databases only.
+IF DB_ID(N'$(LoansDb)') IS NOT NULL BEGIN ALTER DATABASE [$(LoansDb)] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [$(LoansDb)]; END
+GO
+IF DB_ID(N'$(MembersDb)') IS NOT NULL BEGIN ALTER DATABASE [$(MembersDb)] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [$(MembersDb)]; END
+GO
+IF DB_ID(N'$(CatalogDb)') IS NOT NULL BEGIN ALTER DATABASE [$(CatalogDb)] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [$(CatalogDb)]; END
+GO

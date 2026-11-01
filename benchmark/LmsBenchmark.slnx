@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Lms.Bench.Tool/Lms.Bench.Tool.csproj" />
+    <Project Path="src/Lms.Catalog.Service/Lms.Catalog.Service.csproj" />
+    <Project Path="src/Lms.Contracts/Lms.Contracts.csproj" />
+    <Project Path="src/Lms.Data/Lms.Data.csproj" />
+    <Project Path="src/Lms.DomainClient/Lms.DomainClient.csproj" />
+    <Project Path="src/Lms.Edge.GraphQL/Lms.Edge.GraphQL.csproj" />
+    <Project Path="src/Lms.Edge.Rest/Lms.Edge.Rest.csproj" />
+    <Project Path="src/Lms.Hosting/Lms.Hosting.csproj" />
+    <Project Path="src/Lms.Loans.Service/Lms.Loans.Service.csproj" />
+    <Project Path="src/Lms.Members.Service/Lms.Members.Service.csproj" />
+    <Project Path="src/Lms.RequiredBytes/Lms.RequiredBytes.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Lms.IntegrationTests/Lms.IntegrationTests.csproj" />
+    <Project Path="tests/Lms.UnitTests/Lms.UnitTests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Lms.Contracts\Lms.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Hosting\Lms.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Lms.Data\Lms.Data.csproj" />
+    <ProjectReference Include="..\..\src\Lms.RequiredBytes\Lms.RequiredBytes.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

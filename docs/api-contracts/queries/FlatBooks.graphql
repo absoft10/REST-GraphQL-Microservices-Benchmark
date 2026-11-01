@@ -1,0 +1,12 @@
+# F-G query document (M2 A-2). Selects exactly the flat A-6 required fields (DECISION-003, O-1).
+# Field names ⟨P⟩ until dataset verification (O-7). Variables: {"offset": 0, "limit": N}
+query FlatBooks($offset: Int!, $limit: Int!) {
+  books(offset: $offset, limit: $limit) {
+    bookId
+    title
+    authors
+    category
+    price
+    publishYear
+  }
+}

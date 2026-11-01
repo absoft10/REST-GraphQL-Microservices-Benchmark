@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>lms-bench</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lms.Data\Lms.Data.csproj" />
+    <ProjectReference Include="..\Lms.RequiredBytes\Lms.RequiredBytes.csproj" />
+  </ItemGroup>
+</Project>

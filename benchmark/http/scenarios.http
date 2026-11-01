@@ -1,0 +1,75 @@
+### LMS benchmark — the five experimental scenarios (docs/api-contracts). Executable with the VS Code
+### "REST Client" extension, Visual Studio 2022+ or JetBrains HTTP Client.
+### Requires: scripts/db-init.ps1 (seed 20261101, TEMPORARY book fixture — NOT research data) and
+### scripts/start-services.ps1. N = 100, M = 10 are the Tier 2 placeholders.
+
+@rest = http://localhost:5201
+@graphql = http://localhost:5202
+
+### 1. F-R — Flat REST
+GET {{rest}}/api/books?offset=0&limit=100
+Accept: application/json
+Accept-Encoding: identity
+
+### 2. F-G — Flat GraphQL (transmitted canonical query text, graphql-api.md §1)
+POST {{graphql}}/graphql
+Content-Type: application/json
+Accept: application/json
+Accept-Encoding: identity
+
+{"query":"query FlatBooks($offset: Int!, $limit: Int!) { books(offset: $offset, limit: $limit) { bookId title authors category price publishYear } }","operationName":"FlatBooks","variables":{"offset":0,"limit":100}}
+
+### 3. N-RC — Nested REST composite (one request; 3 internal calls)
+GET {{rest}}/api/members-with-loans?offset=0&limit=10
+Accept: application/json
+Accept-Encoding: identity
+
+### 4a. N-RM call 1 — members
+GET {{rest}}/api/members?offset=0&limit=10
+Accept: application/json
+Accept-Encoding: identity
+
+### 4b. N-RM call 2 — loans of the member IDs from 4a (sorted, comma-separated)
+GET {{rest}}/api/loans?memberIds=1,2,3,4,5,6,7,8,9,10
+Accept: application/json
+Accept-Encoding: identity
+
+### 4c. N-RM call 3 — books of the bookIds from 4b, SORTED and de-duplicated.
+### The list below is valid for seed 20261101 (captured by scripts/verify-equivalence.ps1,
+### artifacts/equivalence/local-fixture/samples/N-RM_call3.exchange.txt). Other seeds: take it from that file,
+### or use the Postman collection, which computes it from the 4b response.
+GET {{rest}}/api/books?ids=17,26,74,163,167,180,200,209,276,339,369,379,411,415,438,474,493,498,512,537,774,792,793,813,947,972,1003,1073,1074,1093,1109,1130,1137,1174,1183,1318,1459,1479,1545,1546,1599,1628,1807,1840,1841,1854,1870,1891,1903,1980
+Accept: application/json
+Accept-Encoding: identity
+
+### 5. N-G — Nested GraphQL (one request; DataLoaders → 3 internal calls)
+POST {{graphql}}/graphql
+Content-Type: application/json
+Accept: application/json
+Accept-Encoding: identity
+
+{"query":"query NestedMembers($offset: Int!, $limit: Int!) { members(offset: $offset, limit: $limit) { memberId firstName lastName loans { loanId loanDate returnDate book { bookId title authors } } } }","operationName":"NestedMembers","variables":{"offset":0,"limit":10}}
+
+### --- Error examples (contract errors-and-pagination.md §4) ---
+
+### 400 invalid-parameter (limit missing)
+GET {{rest}}/api/books?offset=0
+Accept: application/json
+
+### 400 invalid-id-list
+GET {{rest}}/api/loans?memberIds=1,,2
+Accept: application/json
+
+### 404 problem+json
+GET {{rest}}/api/unknown
+Accept: application/json
+
+### GraphQL INVALID_ARGUMENT (data: null)
+POST {{graphql}}/graphql
+Content-Type: application/json
+Accept: application/json
+
+{"query":"query FlatBooks($offset: Int!, $limit: Int!) { books(offset: $offset, limit: $limit) { bookId } }","operationName":"FlatBooks","variables":{"offset":-1,"limit":10}}
+
+### Health (not part of any workload)
+GET {{rest}}/health

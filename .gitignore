@@ -39,3 +39,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .idea/
+
+# --- Generated local datasets (reproducible from seed; manifests are recorded in docs when needed) ---
+/benchmark/data/generated/
+/benchmark/artifacts/

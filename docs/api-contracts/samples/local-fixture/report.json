@@ -1,0 +1,103 @@
+{
+  "booksSource": "TEMPORARY_FIXTURE_NOT_RESEARCH_DATA",
+  "passed": true,
+  "flatRequiredBytes": 14284,
+  "nestedRequiredBytes": 8518,
+  "configs": [
+    {
+      "config": "F-R",
+      "equivalentToOracle": true,
+      "allCompact": true,
+      "bytes": {
+        "workload": "flat",
+        "config": "F-R",
+        "calls": 1,
+        "requiredBytes": 14284,
+        "actualBytes": 35281,
+        "envelope": 0,
+        "nonRequired": 20230,
+        "formatting": 767,
+        "multiCall": 0,
+        "overFetch": 0.5951361922847992,
+        "sumsExactly": true
+      },
+      "failure": null
+    },
+    {
+      "config": "F-G",
+      "equivalentToOracle": true,
+      "allCompact": true,
+      "bytes": {
+        "workload": "flat",
+        "config": "F-G",
+        "calls": 1,
+        "requiredBytes": 14284,
+        "actualBytes": 15070,
+        "envelope": 19,
+        "nonRequired": 0,
+        "formatting": 767,
+        "multiCall": 0,
+        "overFetch": 0.05215660252156602,
+        "sumsExactly": true
+      },
+      "failure": null
+    },
+    {
+      "config": "N-RC",
+      "equivalentToOracle": true,
+      "allCompact": true,
+      "bytes": {
+        "workload": "nested",
+        "config": "N-RC",
+        "calls": 1,
+        "requiredBytes": 8518,
+        "actualBytes": 26145,
+        "envelope": 0,
+        "nonRequired": 17338,
+        "formatting": 289,
+        "multiCall": 0,
+        "overFetch": 0.6742015681774718,
+        "sumsExactly": true
+      },
+      "failure": null
+    },
+    {
+      "config": "N-RM",
+      "equivalentToOracle": true,
+      "allCompact": true,
+      "bytes": {
+        "workload": "nested",
+        "config": "N-RM",
+        "calls": 3,
+        "requiredBytes": 8518,
+        "actualBytes": 25697,
+        "envelope": 0,
+        "nonRequired": 16012,
+        "formatting": 289,
+        "multiCall": 878,
+        "overFetch": 0.6685216173094135,
+        "sumsExactly": true
+      },
+      "failure": null
+    },
+    {
+      "config": "N-G",
+      "equivalentToOracle": true,
+      "allCompact": true,
+      "bytes": {
+        "workload": "nested",
+        "config": "N-G",
+        "calls": 1,
+        "requiredBytes": 8518,
+        "actualBytes": 8828,
+        "envelope": 21,
+        "nonRequired": 0,
+        "formatting": 289,
+        "multiCall": 0,
+        "overFetch": 0.03511554145899411,
+        "sumsExactly": true
+      },
+      "failure": null
+    }
+  ]
+}

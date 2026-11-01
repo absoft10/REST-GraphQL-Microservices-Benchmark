@@ -1,0 +1,8 @@
+POST http://localhost:5202/graphql
+{"query":"query FlatBooks($offset: Int!, $limit: Int!) { books(offset: $offset, limit: $limit) { bookId title authors category price publishYear } }","operationName":"FlatBooks","variables":{"offset":0,"limit":100}}
+
+HTTP 200
+Content-Length: 15070
+Content-Type: application/json; charset=utf-8
+Date: Sat, 31 Oct 2026 23:31:40 GMT
+Vary: Accept

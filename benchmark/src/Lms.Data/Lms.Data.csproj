@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lms.Contracts\Lms.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- DDL scripts are the single source; copied next to the binaries so the tool and tests run them unchanged. -->
+    <None Include="..\..\data\ddl\*.sql" Link="ddl\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

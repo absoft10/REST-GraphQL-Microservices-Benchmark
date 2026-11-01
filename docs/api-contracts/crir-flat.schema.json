@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lms-benchmark.local/schemas/crir-flat.schema.json",
+  "title": "CRIR - flat workload (v0.1-provisional; book field names provisional until O-7)",
+  "description": "Array of N books ordered by bookId ascending (ordering is checked by the golden tests, not expressible here). DECISION-003 O-1.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["bookId", "title", "authors", "category", "price", "publishYear"],
+    "properties": {
+      "bookId": { "type": "integer", "minimum": 1 },
+      "title": { "type": "string" },
+      "authors": { "type": "string" },
+      "category": { "type": ["string", "null"] },
+      "price": { "type": ["number", "null"] },
+      "publishYear": { "type": ["integer", "null"] }
+    }
+  }
+}

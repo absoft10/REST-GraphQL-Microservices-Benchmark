@@ -1,0 +1,55 @@
+# GraphQL schema for Lms.Edge.GraphQL. Contract v0.1-provisional (2026-11-01).
+# ⟨P⟩ = provisional until the book dataset has been verified (DECISION-004, O-7).
+# Scalar names "Decimal" and "Date" are the contract names. The HotChocolate scalar
+# bound to each one is pinned at implementation, so that values serialize as
+# DECISION-005 (SP-1) requires:
+#   Decimal = JSON number at the stored scale (e.g. 12.50)
+#   Date    = "YYYY-MM-DD"
+# No mutations (D-5). No subscriptions. Projection pushdown is not used (AP-8).
+
+scalar Decimal
+scalar Date
+
+type Query {
+  "Books ordered by bookId ascending. offset >= 0; limit 1..1000."
+  books(offset: Int!, limit: Int!): [Book!]!
+
+  "Members ordered by memberId ascending. offset >= 0; limit 1..1000."
+  members(offset: Int!, limit: Int!): [Member!]!
+}
+
+"Full Book model; clients select fields. ⟨P⟩ field set = verified source columns."
+type Book {
+  bookId: Int!
+  title: String!          # ⟨P⟩
+  authors: String!        # ⟨P⟩
+  description: String     # ⟨P⟩ if present in source
+  category: String        # ⟨P⟩
+  publisher: String       # ⟨P⟩ if present in source
+  price: Decimal          # ⟨P⟩
+  publishMonth: String    # ⟨P⟩ if present in source
+  publishYear: Int        # ⟨P⟩
+}
+
+type Member {
+  memberId: Int!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phoneNumber: String!
+  address: String!
+  "Loans of this member ordered by loanId ascending (batched DataLoader keyed by memberId)."
+  loans: [Loan!]!
+}
+
+type Loan {
+  loanId: Int!
+  memberId: Int!
+  bookId: Int!
+  loanDate: Date!
+  "null = not yet returned"
+  returnDate: Date
+  isReturned: Boolean!
+  "The borrowed book (batched DataLoader keyed by bookId)."
+  book: Book!
+}

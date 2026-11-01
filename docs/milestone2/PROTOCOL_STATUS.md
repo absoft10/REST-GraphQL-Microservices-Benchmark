@@ -19,6 +19,14 @@
 | O-12 / AM-2 `_dbq.csv` aggregation | DECISION-007 |
 | O-14 version control | DECISION-008 |
 
+## 1a. Implementation specifications
+
+| Item | Location | State |
+|---|---|---|
+| API contracts v0.1-provisional (Task 3): REST, GraphQL SDL and queries, N-RM sequence, internal API, errors and pagination, Required Bytes spec, CRIR JSON Schemas | `docs/api-contracts/` | Implements DECISION-002 … 008. Book fields ⟨P⟩. Implementation-level choices are listed for review in `docs/api-contracts/README.md` §3. |
+
+| Implementation and local validation (Tasks 4–6) | `benchmark/` (`README.md` = run guide); `docs/milestone2/Milestone2_Progress_Tracker.md` | Built and tested locally on LocalDB with the TEMPORARY book fixture: 125/125 tests passing (70 unit + 55 LocalDB integration; TRX, 2026-11-01). The five-configuration equivalence passes. |
+
 ## 2. Provisional (approved in principle; pending verification)
 
 | Item | Pending on | Unblocks |
@@ -32,6 +40,7 @@
 
 ## 3. Open decisions (not approved)
 
+- **New (2026-11-01), Tier 2: AD-37**, HotChocolate `MaxConcurrentExecutions` (default 64, GraphQL-only limiter). Proposed: unlimited. See doc 06 §2 #15 and api-contracts CHANGELOG C-1.
 - **Tier 2 (after local validation, before Phase 9):**
   - AD-28/CL-4: extraction inside the N-RM task;
   - AD-17/AM-1: analysis window;

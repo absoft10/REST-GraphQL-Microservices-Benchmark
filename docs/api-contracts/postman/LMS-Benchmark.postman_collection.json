@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "LMS REST vs GraphQL Benchmark - five scenarios (local)",
+    "description": "Contract v0.1-provisional (docs/api-contracts). Local services from benchmark/scripts/start-services.ps1. Book data is the TEMPORARY fixture - NOT research data. N-RM computes call-2/call-3 ID lists from the previous response (sorted, de-duplicated) exactly as nested-rest-multicall-sequence.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "rest", "value": "http://localhost:5201" },
+    { "key": "graphql", "value": "http://localhost:5202" },
+    { "key": "N", "value": "100" },
+    { "key": "M", "value": "10" },
+    { "key": "memberIds", "value": "" },
+    { "key": "bookIds", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1 F-R Flat REST",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+        "url": { "raw": "{{rest}}/api/books?offset=0&limit={{N}}", "host": [ "{{rest}}" ], "path": [ "api", "books" ],
+                 "query": [ { "key": "offset", "value": "0" }, { "key": "limit", "value": "{{N}}" } ] }
+      },
+      "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 and N books', () => { pm.response.to.have.status(200); pm.expect(pm.response.json().length).to.eql(Number(pm.collectionVariables.get('N'))); });"
+      ] } } ]
+    },
+    {
+      "name": "2 F-G Flat GraphQL",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+        "body": { "mode": "raw", "raw": "{\"query\":\"query FlatBooks($offset: Int!, $limit: Int!) { books(offset: $offset, limit: $limit) { bookId title authors category price publishYear } }\",\"operationName\":\"FlatBooks\",\"variables\":{\"offset\":0,\"limit\":{{N}}}}" },
+        "url": { "raw": "{{graphql}}/graphql", "host": [ "{{graphql}}" ], "path": [ "graphql" ] }
+      },
+      "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('no errors and N books', () => { const b = pm.response.json(); pm.expect(b).to.not.have.property('errors'); pm.expect(b.data.books.length).to.eql(Number(pm.collectionVariables.get('N'))); });"
+      ] } } ]
+    },
+    {
+      "name": "3 N-RC Nested REST composite",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+        "url": { "raw": "{{rest}}/api/members-with-loans?offset=0&limit={{M}}", "host": [ "{{rest}}" ], "path": [ "api", "members-with-loans" ],
+                 "query": [ { "key": "offset", "value": "0" }, { "key": "limit", "value": "{{M}}" } ] }
+      },
+      "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('M members with loans', () => { pm.response.to.have.status(200); pm.expect(pm.response.json().length).to.eql(Number(pm.collectionVariables.get('M'))); });"
+      ] } } ]
+    },
+    {
+      "name": "4 N-RM Nested REST multi-call (run the three in order)",
+      "item": [
+        {
+          "name": "4a members",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+            "url": { "raw": "{{rest}}/api/members?offset=0&limit={{M}}", "host": [ "{{rest}}" ], "path": [ "api", "members" ],
+                     "query": [ { "key": "offset", "value": "0" }, { "key": "limit", "value": "{{M}}" } ] }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "const ids = pm.response.json().map(m => m.memberId);",
+            "pm.test('M members', () => pm.expect(ids.length).to.eql(Number(pm.collectionVariables.get('M'))));",
+            "pm.collectionVariables.set('memberIds', ids.join(','));"
+          ] } } ]
+        },
+        {
+          "name": "4b loans",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+            "url": { "raw": "{{rest}}/api/loans?memberIds={{memberIds}}", "host": [ "{{rest}}" ], "path": [ "api", "loans" ],
+                     "query": [ { "key": "memberIds", "value": "{{memberIds}}" } ] }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "const ids = [...new Set(pm.response.json().map(l => l.bookId))].sort((a, b) => a - b);",
+            "pm.test('loans returned', () => pm.expect(pm.response.json().length).to.be.above(0));",
+            "pm.collectionVariables.set('bookIds', ids.join(','));"
+          ] } } ]
+        },
+        {
+          "name": "4c books",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+            "url": { "raw": "{{rest}}/api/books?ids={{bookIds}}", "host": [ "{{rest}}" ], "path": [ "api", "books" ],
+                     "query": [ { "key": "ids", "value": "{{bookIds}}" } ] }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+            "pm.test('one book per id', () => pm.expect(pm.response.json().length).to.eql(pm.collectionVariables.get('bookIds').split(',').length));"
+          ] } } ]
+        }
+      ]
+    },
+    {
+      "name": "5 N-G Nested GraphQL",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" }, { "key": "Accept-Encoding", "value": "identity" } ],
+        "body": { "mode": "raw", "raw": "{\"query\":\"query NestedMembers($offset: Int!, $limit: Int!) { members(offset: $offset, limit: $limit) { memberId firstName lastName loans { loanId loanDate returnDate book { bookId title authors } } } }\",\"operationName\":\"NestedMembers\",\"variables\":{\"offset\":0,\"limit\":{{M}}}}" },
+        "url": { "raw": "{{graphql}}/graphql", "host": [ "{{graphql}}" ], "path": [ "graphql" ] }
+      },
+      "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('no errors and M members', () => { const b = pm.response.json(); pm.expect(b).to.not.have.property('errors'); pm.expect(b.data.members.length).to.eql(Number(pm.collectionVariables.get('M'))); });"
+      ] } } ]
+    }
+  ]
+}

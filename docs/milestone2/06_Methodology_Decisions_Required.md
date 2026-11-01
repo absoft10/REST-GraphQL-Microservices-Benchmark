@@ -70,6 +70,7 @@ All local, at no AWS cost. Each needs the named local evidence first.
 | 11 | — | Sizes N, O, M, L, dataset volumes | **Placeholders N = 100, O = 0, M = 10, L = 5; 10,000 members; about 100,000 loans.** Confirm after local payload sizes are seen. **Do not** look at REST/GraphQL timing when choosing them. | Local golden bodies (sizes only) | No | 03 §1 |
 | 12 | D-8 | Pause between runs | **60 s** (M2 proposal) | — | No | M2 §6 |
 | 13 | P-1 / P-4 | Saturation thresholds | **5% / 5%** (M2 proposals) | — | No | M2 §6 |
+| 15 | **AD-37** (new, 2026-11-01) | HotChocolate `MaxConcurrentExecutions` (library default **64**; REST has no limiter) | **Proposed: 0 (unlimited)**, so that neither stack has a server-side admission limit. Alternative: keep 64 and disclose it. | Found during implementation (api-contracts CHANGELOG C-1). The value directly affects GraphQL queueing at levels ≥ 100. | **Clarif.** of neutrality (doc 01 §1) | `src/Lms.Edge.GraphQL/Program.cs` |
 | 14 | AD-02 / AD-06 / AD-13 | Deployment shape for the IaC drafts | **A1 two stacks; direct ingress through Cloud Map; Terraform** | — | No | 01 §2, §6 |
 
 ## 3. Tier 3: can be finalised during an authorised AWS capacity pilot

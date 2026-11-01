@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lms-benchmark.local/schemas/crir-nested.schema.json",
+  "title": "CRIR - nested workload (v0.1-provisional; book field names provisional until O-7)",
+  "description": "Array of M members ordered by memberId; loans ordered by loanId; exactly L loans per member (O-8). DECISION-003 O-2.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["memberId", "firstName", "lastName", "loans"],
+    "properties": {
+      "memberId": { "type": "integer", "minimum": 1 },
+      "firstName": { "type": "string" },
+      "lastName": { "type": "string" },
+      "loans": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["loanId", "loanDate", "returnDate", "book"],
+          "properties": {
+            "loanId": { "type": "integer", "minimum": 1 },
+            "loanDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+            "returnDate": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+            "book": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["bookId", "title", "authors"],
+              "properties": {
+                "bookId": { "type": "integer", "minimum": 1 },
+                "title": { "type": "string" },
+                "authors": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
